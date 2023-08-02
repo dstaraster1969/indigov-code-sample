@@ -13,14 +13,19 @@ def driver():
     driver.close()
 
 
+@pytest.fixture()
+def landing_page(driver):
+    return LandingPage(driver)
+
+
 # the URL is the same for all tests
 url = 'https://github.com/orgs/indigov-us/'
 
 
 # Exercise #1
-def test_num_repositories(driver):
+def test_num_repositories(driver, landing_page):
     driver.get(url)
-    num_repos = LandingPage(driver).num_repos()
+    num_repos = landing_page.num_repos()
 
     assert num_repos == 17
 
