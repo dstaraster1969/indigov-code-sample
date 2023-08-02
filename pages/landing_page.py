@@ -1,4 +1,7 @@
+import time
+
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 
@@ -15,6 +18,9 @@ class LandingPage:
     def num_repos(self):
         repo_tab = self.driver.find_element(By.CSS_SELECTOR, '[data-tab-item=org-header-repositories-tab]')
         repo_count_element = repo_tab.find_element(By.CLASS_NAME, 'js-profile-repository-count')
+
+        # It takes a sec before the repo count is updated, so wait for it
+        self.wait.until(lambda driver: repo_count_element.text != '')
         num_repos = repo_count_element.text
 
         return int(num_repos)
