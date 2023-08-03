@@ -55,7 +55,8 @@ def test_clone_link(driver):
     num_repos = PageHeader(driver).num_repos()
     repos_page.select_repo_at_index(num_repos - 1)
     clone_link = RepoPage(driver).clone_link()
-    sleep(2)
+
+    assert clone_link == 'https://github.com/indigov-us/zendesk-client-api.git'
 
 
 
