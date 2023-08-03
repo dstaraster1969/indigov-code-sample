@@ -41,12 +41,19 @@ def test_sort(driver):
     repo_page = RepoPage(driver)
     repo_page.sort_repos('name')
     num_repos = PageHeader(driver).num_repos()
-    first_repo_name = repo_page.get_repo_at_index(0)
-    last_repo_name = repo_page.get_repo_at_index(num_repos - 1)
+    first_repo_name = repo_page.repo_at_index_text(0)
+    last_repo_name = repo_page.repo_at_index_text(num_repos - 1)
 
     assert 'ansible' in first_repo_name
     assert 'zendesk-client-api' in last_repo_name
 
+
+def test_clone_link(driver):
+    repo_page = RepoPage(driver)
+    repo_page.sort_repos('name')
+    num_repos = PageHeader(driver).num_repos()
+    repo_page.select_repo_at_index(num_repos - 1)
+    sleep(2)
 
 
 

@@ -55,9 +55,25 @@ class RepoPage:
         repos = self.driver.find_element(By.ID, 'org-repositories')
         return repos.find_element(By.TAG_NAME, 'strong').text
 
-    def get_repo_at_index(self, i):
+    def repo_at_index_text(self, i):
+        repo = self.repo_at_index(i)
+        link = repo.find_element(By.TAG_NAME, 'a')
+        return link.text.strip()
+
+    def repo_at_index(self, i):
         repo_list = self.driver.find_element(By.CSS_SELECTOR, '.org-repos.repo-list')
         repos = repo_list.find_elements(By.TAG_NAME, 'li')
         repo = repos[i]
-        return repo.text
 
+        return repo
+
+    def select_repo_at_index(self, i):
+        repo = self.repo_at_index(i)
+        link = repo.find_element(By.TAG_NAME, 'a')
+        link.click()
+
+    def clone_link(self, i):
+        repo_list = self.driver.find_element(By.CSS_SELECTOR, '.org-repos.repo-list')
+        repos = repo_list.find_elements(By.TAG_NAME, 'li')
+        repo = repos[i]
+        repo.click()
