@@ -27,19 +27,31 @@ def test_num_repositories(driver):
 
 
 def test_language_filter(driver):
-    repo_tab = driver.find_element(By.CSS_SELECTOR, '[data-tab-item=org-header-repositories-tab]')
-    repo_tab.click()
-    language_options = driver.find_element(By.ID, 'language-options')
-    language_button = language_options.find_element(By.CSS_SELECTOR, '.btn')
-    language_button.click()
-    typescript_item = language_options.find_element(By.CSS_SELECTOR, '.SelectMenu-item:nth-child(7)')
-    typescript_item.click()
-    sleep(5)
+    filter_on_language(driver, 'typescript')
+    # repo_tab = driver.find_element(By.CSS_SELECTOR, '[data-tab-item=org-header-repositories-tab]')
+    # repo_tab.click()
+    # language_options = driver.find_element(By.ID, 'language-options')
+    # language_button = language_options.find_element(By.CSS_SELECTOR, '.btn')
+    # language_button.click()
+    # typescript_item = language_options.find_element(By.CSS_SELECTOR, '.SelectMenu-item:nth-child(7)')
+    # typescript_item.click()
+    # sleep(5)
 
     # LandingPage(driver).click_repo_tab()
     # repo_page = RepoPage(driver)
     # repo_page.filter_by_language('Typescript')
 
+
+def filter_on_language(driver, language):
+    repo_tab = driver.find_element(By.CSS_SELECTOR, '[data-tab-item=org-header-repositories-tab]')
+    repo_tab.click()
+    language_options = driver.find_element(By.ID, 'language-options')
+    language_button = language_options.find_element(By.CSS_SELECTOR, '.btn')
+    language_button.click()
+    typescript_item = language_options.find_element(By.ID, 'language_typescript')\
+        .find_element(By.XPATH, '..')
+    typescript_item.click()
+    sleep(5)
 
 
 
