@@ -1,7 +1,6 @@
 import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 
@@ -10,7 +9,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 # id does not exist when not logged in. In real life, I'd create a test user and verify the
 # logged in and logged out user experience. For this purpose, I'm just working with the
 # not logged in page
-class LandingPage:
+
+class PageHeader:
     def __init__(self, driver):
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
@@ -24,3 +24,7 @@ class LandingPage:
         num_repos = repo_count_element.text
 
         return int(num_repos)
+
+    def click_repo_tab(self):
+        repo_tab = self.driver.find_element(By.CSS_SELECTOR, '[data-tab-item=org-header-repositories-tab]')
+        repo_tab.click()

@@ -6,7 +6,10 @@ import argparse
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-from pages.landing_page import LandingPage
+from pages.landing_page import PageHeader
+from pages.repo_page import RepoPage
+
+
 # from pages.repo_page import RepoPage
 
 
@@ -21,29 +24,30 @@ def driver():
 
 # Exercise #1
 def test_num_repositories(driver):
-    num_repos = LandingPage(driver).num_repos()
+    num_repos = PageHeader(driver).num_repos()
 
     assert num_repos == 17
 
 
 def test_language_filter(driver):
-    filter_on_language(driver, 'typescript')
+    repo_page = RepoPage(driver)
+    repo_page.filter_on_language('typescript')
+    num_repos = repo_page.num_filtered_repos()
+
+    assert int(num_repos) == 5
 
 
-def filter_on_language(driver, language):
-    repo_tab = driver.find_element(By.CSS_SELECTOR, '[data-tab-item=org-header-repositories-tab]')
-    repo_tab.click()
-    language_options = driver.find_element(By.ID, 'language-options')
-    language_button = language_options.find_element(By.CSS_SELECTOR, '.btn')
-    language_button.click()
+def test_sort(driver):
+    repo_page = RepoPage(driver)
+    repo_page.sort_repos('name')
+    num_repos = PageHeader(driver).num_repos()
+    first_repo_name = repo_page.get_repo_at_index(0)
+    last_repo_name = repo_page.get_repo_at_index(num_repos - 1)
 
-    # after clicking on the Language button, the language_options element is stale
-    # so re-find it
-    language_options = driver.find_element(By.ID, 'language-options')
-    language_option = language_options.find_element(By.ID, f'language_{language}')
-    language_option_parent = language_option.find_element(By.XPATH, '..')
-    language_option_parent.click()
-    sleep(5)
+    assert 'ansible' in first_repo_name
+    assert 'zendesk-client-api' in last_repo_name
+
+
 
 
 
