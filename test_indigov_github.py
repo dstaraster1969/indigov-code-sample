@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 from pages.landing_page import PageHeader
 from pages.repo_page import RepoPage
+from pages.repos_page import ReposPage
 
 
 # from pages.repo_page import RepoPage
@@ -30,7 +31,7 @@ def test_num_repositories(driver):
 
 
 def test_language_filter(driver):
-    repo_page = RepoPage(driver)
+    repo_page = ReposPage(driver)
     repo_page.filter_on_language('typescript')
     num_repos = repo_page.num_filtered_repos()
 
@@ -38,7 +39,7 @@ def test_language_filter(driver):
 
 
 def test_sort(driver):
-    repo_page = RepoPage(driver)
+    repo_page = ReposPage(driver)
     repo_page.sort_repos('name')
     num_repos = PageHeader(driver).num_repos()
     first_repo_name = repo_page.repo_at_index_text(0)
@@ -49,10 +50,11 @@ def test_sort(driver):
 
 
 def test_clone_link(driver):
-    repo_page = RepoPage(driver)
-    repo_page.sort_repos('name')
+    repos_page = ReposPage(driver)
+    repos_page.sort_repos('name')
     num_repos = PageHeader(driver).num_repos()
-    repo_page.select_repo_at_index(num_repos - 1)
+    repos_page.select_repo_at_index(num_repos - 1)
+    clone_link = RepoPage(driver).clone_link()
     sleep(2)
 
 
