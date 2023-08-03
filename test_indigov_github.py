@@ -7,7 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from pages.landing_page import LandingPage
-from pages.repo_page import RepoPage
+# from pages.repo_page import RepoPage
 
 
 @pytest.fixture()
@@ -36,9 +36,13 @@ def filter_on_language(driver, language):
     language_options = driver.find_element(By.ID, 'language-options')
     language_button = language_options.find_element(By.CSS_SELECTOR, '.btn')
     language_button.click()
-    typescript_item = language_options.find_element(By.ID, f'language_{language}')\
-        .find_element(By.XPATH, '..')
-    typescript_item.click()
+
+    # after clicking on the Language button, the language_options element is stale
+    # so re-find it
+    language_options = driver.find_element(By.ID, 'language-options')
+    language_option = language_options.find_element(By.ID, f'language_{language}')
+    language_option_parent = language_option.find_element(By.XPATH, '..')
+    language_option_parent.click()
     sleep(5)
 
 
