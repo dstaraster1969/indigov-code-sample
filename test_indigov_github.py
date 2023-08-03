@@ -1,46 +1,44 @@
+import sys
+from time import sleep
+
 import pytest
 import argparse
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 from pages.landing_page import LandingPage
+from pages.repo_page import RepoPage
 
 
 @pytest.fixture()
 def driver():
-    # get the desired browser from the command line
-    driver = get_driver()
+    # Hardcoding browser; irl would implement cross-browser testing
+    driver = webdriver.Chrome()
+    driver.get('https://github.com/orgs/indigov-us/')
     yield driver
     driver.close()
 
 
-# the URL is the same for all tests
-url = 'https://github.com/orgs/indigov-us/'
-
-
 # Exercise #1
 def test_num_repositories(driver):
-    driver.get(url)
     num_repos = LandingPage(driver).num_repos()
 
     assert num_repos == 17
 
 
-# Get the browser to test against from the command line
-def get_driver():
-    parser = argparse.ArgumentParser(description='Test IndiGov GitHub')
-    parser.add_argument('browser', help='The browser to test against: chrome or firefox')
-    args = parser.parse_args()
+def test_language_filter(driver):
+    repo_tab = driver.find_element(By.CSS_SELECTOR, '[data-tab-item=org-header-repositories-tab]')
+    repo_tab.click()
+    language_options = driver.find_element(By.ID, 'language-options')
+    language_button = language_options.find_element(By.CSS_SELECTOR, '.btn')
+    language_button.click()
+    typescript_item = language_options.find_element(By.CSS_SELECTOR, '.SelectMenu-item:nth-child(7)')
+    typescript_item.click()
+    sleep(5)
 
-    match args.browser:
-        case 'chrome':
-            driver = webdriver.Chrome()
-        case 'firefox':
-            driver = webdriver.Firefox()
-        # additional browsers would go here
-        case _:
-            driver = webdriver.Chrome()
-
-    return driver
+    # LandingPage(driver).click_repo_tab()
+    # repo_page = RepoPage(driver)
+    # repo_page.filter_by_language('Typescript')
 
 
 
