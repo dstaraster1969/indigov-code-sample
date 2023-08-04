@@ -13,7 +13,8 @@ from pages.repos_page import ReposPage
 # each test. This allows each test to begin in a clean state.
 @pytest.fixture()
 def driver():
-    # Hardcoded the browser. In a real project, I would allow for multiple browsers and test against each of them.
+    # Hardcoded the browser. In a real project, multiple browsers would be allowed and tests would be run
+    # against each of them.
     driver = webdriver.Chrome()
     driver.get('https://github.com/orgs/indigov-us/')
     yield driver
@@ -42,9 +43,13 @@ def test_sort(driver):
     repo_page.sort_repos('name')
     num_repos = PageHeader(driver).num_repos()
     first_repo_name = repo_page.repo_at_index_text(0)
+    middle_repo_name = repo_page.repo_at_index_text(6)
     last_repo_name = repo_page.repo_at_index_text(num_repos - 1)
 
+    # Generally, multiple asserts in one testcase are a bad idea. Here, though, all the asserts are testing the
+    # same thing.
     assert 'ansible' in first_repo_name
+    assert 'indigov' in middle_repo_name
     assert 'zendesk-client-api' in last_repo_name
 
 

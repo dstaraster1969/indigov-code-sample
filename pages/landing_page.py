@@ -13,9 +13,8 @@ class PageHeader:
         self.driver = driver
         self.wait = WebDriverWait(driver, 10)
 
-    # To get the number of repositories, I queried the button in the header rather than counting the repos.
-    #
     def num_repos(self):
+        # To get the number of repositories, I queried the button in the header rather than counting the repos.
         repo_tab = self.driver.find_element(By.CSS_SELECTOR, '[data-tab-item=org-header-repositories-tab]')
         repo_count_element = repo_tab.find_element(By.CLASS_NAME, 'js-profile-repository-count')
 

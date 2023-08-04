@@ -10,6 +10,7 @@ class ReposPage:
         self.driver = driver
 
     def filter_on_language(self, language):
+        # I prefer to find each element and assign it to a variable. This makes debugging much easier.
         wait = WebDriverWait(self.driver, 10)
         repo_tab = self.driver.find_element(By.CSS_SELECTOR, '[data-tab-item=org-header-repositories-tab]')
         repo_tab.click()
@@ -21,7 +22,6 @@ class ReposPage:
         sleep(1)
         language_button = language_options.find_element(By.CSS_SELECTOR, '.btn')
         language_button.click()
-        language_options = self.driver.find_element(By.ID, 'language-options')
         language_option = language_options.find_element(By.ID, f'language_{language}')
         language_option_parent = language_option.find_element(By.XPATH, '..')
         language_option_parent.click()
@@ -42,7 +42,6 @@ class ReposPage:
         # In this case, which should be virtually identical to filter_on_language(), but
         # this click displays the menu.
         sort_button.click()
-        sort_options = self.driver.find_element(By.ID, 'sort-options')
         sort_option = sort_options.find_element(By.ID, f'sort_{sort_type}')
         sort_option_parent = sort_option.find_element(By.XPATH, '..')
         sort_option_parent.click()
