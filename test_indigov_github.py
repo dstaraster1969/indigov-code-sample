@@ -1,22 +1,19 @@
-import sys
-from time import sleep
-
 import pytest
-import argparse
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 
 from pages.landing_page import PageHeader
 from pages.repo_page import RepoPage
 from pages.repos_page import ReposPage
 
 
-# from pages.repo_page import RepoPage
+# The logged in DOM is different from the not logged in DOM. This tests the not logged in pages. For a real project,
+# a test user would be created, and both scenarios would be tested.
 
-
+# Use a fixture to instantiate the webdriver. This way the setup is done on every test, and the driver is closed after
+# each test. This allows each test to begin in a clean state.
 @pytest.fixture()
 def driver():
-    # Hardcoding browser; irl would implement cross-browser testing
+    # Hardcoded the browser. In a real project, I would allow for multiple browsers and test against each of them.
     driver = webdriver.Chrome()
     driver.get('https://github.com/orgs/indigov-us/')
     yield driver
@@ -30,6 +27,7 @@ def test_num_repositories(driver):
     assert num_repos == 17
 
 
+# Exercise #2
 def test_language_filter(driver):
     repo_page = ReposPage(driver)
     repo_page.filter_on_language('typescript')
@@ -38,6 +36,7 @@ def test_language_filter(driver):
     assert int(num_repos) == 5
 
 
+# Exercise #3
 def test_sort(driver):
     repo_page = ReposPage(driver)
     repo_page.sort_repos('name')
@@ -49,6 +48,7 @@ def test_sort(driver):
     assert 'zendesk-client-api' in last_repo_name
 
 
+# Exercise #4
 def test_clone_link(driver):
     repos_page = ReposPage(driver)
     repos_page.sort_repos('name')
